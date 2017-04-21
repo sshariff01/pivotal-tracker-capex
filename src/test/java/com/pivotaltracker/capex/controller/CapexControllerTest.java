@@ -5,12 +5,14 @@ import com.pivotaltracker.capex.http.CapexHttpClient;
 import com.pivotaltracker.capex.model.Iteration;
 import com.pivotaltracker.capex.model.ProjectDetails;
 import com.pivotaltracker.capex.util.CapexLinkBuilder;
+import com.pivotaltracker.capex.util.IterationFactory;
 import com.pivotaltracker.capex.util.ProjectDetailsRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.hateoas.Link;
@@ -29,6 +31,9 @@ import static org.mockito.Mockito.verify;
 @SpringBootTest
 public class CapexControllerTest {
 
+    @Spy
+    IterationFactory iterationFactory = new IterationFactory();
+
     @Mock
     CapexLinkBuilder capexLinkBuilder;
 
@@ -37,9 +42,6 @@ public class CapexControllerTest {
 
     @InjectMocks
     CapexController capexController;
-
-    @Autowired
-    ObjectMapper objectMapper;
 
     @Before
     public void setUp() throws IOException {

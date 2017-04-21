@@ -10,8 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.io.IOException;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -22,7 +20,7 @@ public class CapexHttpClientTest {
     CapexHttpClient capexHttpClient;
 
     @Test
-    public void should_returnProjectDetails() throws IOException, JSONException {
+    public void should_returnProjectDetails() throws JSONException {
         ResponseEntity responseEntity = capexHttpClient.getProjectDetails();
 
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
