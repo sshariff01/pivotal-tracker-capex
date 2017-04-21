@@ -1,9 +1,8 @@
 package com.pivotaltracker.capex;
 
-import org.springframework.hateoas.ResourceSupport;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.hateoas.ResourceSupport;
 
 public class Iteration extends ResourceSupport {
 

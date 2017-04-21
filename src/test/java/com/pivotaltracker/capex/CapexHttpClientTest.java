@@ -12,15 +12,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
-public class CapexLinkBuilderTest {
+public class CapexHttpClientTest {
 
     @Autowired
-    CapexLinkBuilder capexLinkBuilder;
+    CapexHttpClient capexHttpClient;
 
     @Test
-    public void should_buildLinkForIteration() throws IOException {
-        assertThat(capexLinkBuilder.buildLink().getRel()).isEqualTo("self");
-        assertThat(capexLinkBuilder.buildLink().getHref()).isEqualTo("http://localhost/");
+    public void should_returnProjectDetails() throws IOException {
+        ProjectDetails projectDetails = capexHttpClient.getProjectDetails();
+
+        assertThat(projectDetails).isNotNull();
+        assertThat(projectDetails.getCurrentIterationNumber()).isInstanceOf(Integer.class);
+        assertThat(projectDetails.getCurrentIterationNumber()).isGreaterThan(0);
     }
 
 }
