@@ -1,5 +1,7 @@
-package com.pivotaltracker.capex;
+package com.pivotaltracker.capex.http;
 
+import com.pivotaltracker.capex.http.CapexHttpClient;
+import com.pivotaltracker.capex.model.ProjectDetails;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

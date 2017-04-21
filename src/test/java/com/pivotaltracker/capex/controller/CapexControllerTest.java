@@ -1,6 +1,10 @@
-package com.pivotaltracker.capex;
+package com.pivotaltracker.capex.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.pivotaltracker.capex.http.CapexHttpClient;
+import com.pivotaltracker.capex.model.Iteration;
+import com.pivotaltracker.capex.model.ProjectDetails;
+import com.pivotaltracker.capex.util.CapexLinkBuilder;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

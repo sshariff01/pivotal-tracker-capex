@@ -1,5 +1,6 @@
-package com.pivotaltracker.capex;
+package com.pivotaltracker.capex.util;
 
+import com.pivotaltracker.capex.controller.CapexController;
 import org.springframework.hateoas.Link;
 import org.springframework.stereotype.Component;
 

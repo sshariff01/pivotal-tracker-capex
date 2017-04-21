@@ -1,4 +1,4 @@
-package com.pivotaltracker.capex;
+package com.pivotaltracker.capex.acceptance;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -15,7 +15,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class CapexTraversonIntegrationTests {
+public class CapexTraversonTest {
 
     @LocalServerPort
     private int port;

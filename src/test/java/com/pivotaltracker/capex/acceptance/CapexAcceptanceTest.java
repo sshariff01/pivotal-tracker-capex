@@ -1,4 +1,4 @@
-package com.pivotaltracker.capex;
+package com.pivotaltracker.capex.acceptance;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -19,7 +19,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class CapexAcceptanceTests {
+public class CapexAcceptanceTest {
 
     @Autowired
     private MockMvc mockMvc;

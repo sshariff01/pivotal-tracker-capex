@@ -1,4 +1,4 @@
-package com.pivotaltracker.capex;
+package com.pivotaltracker.capex.util;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

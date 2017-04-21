@@ -1,4 +1,4 @@
-package com.pivotaltracker.capex;
+package com.pivotaltracker.capex.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
