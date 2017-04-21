@@ -1,7 +1,5 @@
 package com.pivotaltracker.capex.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.pivotaltracker.capex.http.CapexHttpClient;
 import com.pivotaltracker.capex.model.Iteration;
 import com.pivotaltracker.capex.model.ProjectDetails;
 import com.pivotaltracker.capex.util.CapexLinkBuilder;
@@ -13,7 +11,6 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
@@ -23,9 +20,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
