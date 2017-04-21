@@ -4,4 +4,6 @@ Pivotal Tracker CAPEX is a HATEOS-compliant API that provides insight into Capit
 
 ## Usage
 
-See [Swagger Docs]({BASE_URL}/swagger-ui.html) for usage instructions.
+The Base URL for this API is `http://pivotal-tracker-capex.pezapp.io/`
+
+See [Swagger Docs](http://pivotal-tracker-capex.pezapp.io/swagger-ui.html) for usage instructions.
