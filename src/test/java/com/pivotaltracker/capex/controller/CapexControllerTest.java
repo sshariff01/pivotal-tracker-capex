@@ -5,6 +5,7 @@ import com.pivotaltracker.capex.http.CapexHttpClient;
 import com.pivotaltracker.capex.model.Iteration;
 import com.pivotaltracker.capex.model.ProjectDetails;
 import com.pivotaltracker.capex.util.CapexLinkBuilder;
+import com.pivotaltracker.capex.util.ProjectDetailsRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,7 +33,7 @@ public class CapexControllerTest {
     CapexLinkBuilder capexLinkBuilder;
 
     @Mock
-    CapexHttpClient capexHttpClient;
+    ProjectDetailsRepository projectDetailsRepository;
 
     @InjectMocks
     CapexController capexController;
@@ -45,8 +46,7 @@ public class CapexControllerTest {
         Link mockLink = mock(Link.class);
         when(capexLinkBuilder.buildLink()).thenReturn(mockLink);
 
-        ProjectDetails projectDetails = objectMapper.readValue("{ \"current_iteration_number\": 1 }", ProjectDetails.class);
-        when(capexHttpClient.getProjectDetails()).thenReturn(projectDetails);
+        when(projectDetailsRepository.getProjectDetails()).thenReturn(new ProjectDetails(1));
     }
 
     @Test
@@ -54,7 +54,7 @@ public class CapexControllerTest {
         ResponseEntity<Iteration> responseEntity = capexController.iteration();
 
         verify(capexLinkBuilder).buildLink();
-        verify(capexHttpClient).getProjectDetails();
+        verify(projectDetailsRepository).getProjectDetails();
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(responseEntity.getBody()).isInstanceOf(Iteration.class);
         assertThat(responseEntity.getBody().getCurrentIterationNumber()).isEqualTo(1);

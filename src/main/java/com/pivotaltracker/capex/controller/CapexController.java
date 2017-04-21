@@ -1,8 +1,8 @@
 package com.pivotaltracker.capex.controller;
 
 import com.pivotaltracker.capex.util.CapexLinkBuilder;
-import com.pivotaltracker.capex.http.CapexHttpClient;
 import com.pivotaltracker.capex.model.Iteration;
+import com.pivotaltracker.capex.util.ProjectDetailsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,11 +18,11 @@ public class CapexController {
     private CapexLinkBuilder capexLinkBuilder;
 
     @Autowired
-    private CapexHttpClient capexHttpClient;
+    private ProjectDetailsRepository projectDetailsRepository;
 
     @RequestMapping("/")
     public ResponseEntity<Iteration> iteration() throws IOException {
-        Iteration iteration = new Iteration(capexHttpClient.getProjectDetails().getCurrentIterationNumber());
+        Iteration iteration = new Iteration(projectDetailsRepository.getProjectDetails().getCurrentIterationNumber());
         iteration.add(capexLinkBuilder.buildLink());
 
         return new ResponseEntity<>(iteration, HttpStatus.OK);

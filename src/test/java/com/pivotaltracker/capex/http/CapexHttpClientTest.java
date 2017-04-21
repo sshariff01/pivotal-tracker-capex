@@ -1,11 +1,13 @@
 package com.pivotaltracker.capex.http;
 
-import com.pivotaltracker.capex.http.CapexHttpClient;
-import com.pivotaltracker.capex.model.ProjectDetails;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.io.IOException;
@@ -20,12 +22,12 @@ public class CapexHttpClientTest {
     CapexHttpClient capexHttpClient;
 
     @Test
-    public void should_returnProjectDetails() throws IOException {
-        ProjectDetails projectDetails = capexHttpClient.getProjectDetails();
+    public void should_returnProjectDetails() throws IOException, JSONException {
+        ResponseEntity responseEntity = capexHttpClient.getProjectDetails();
 
-        assertThat(projectDetails).isNotNull();
-        assertThat(projectDetails.getCurrentIterationNumber()).isInstanceOf(Integer.class);
-        assertThat(projectDetails.getCurrentIterationNumber()).isGreaterThan(0);
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        JSONObject responseBody = new JSONObject(responseEntity.getBody().toString());
+        assertThat(responseBody.has("current_iteration_number")).isTrue();
     }
 
 }
