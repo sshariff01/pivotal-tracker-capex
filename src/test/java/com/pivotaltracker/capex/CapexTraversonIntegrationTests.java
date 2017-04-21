@@ -1,4 +1,4 @@
-package hello;
+package com.pivotaltracker.capex;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -22,8 +22,10 @@ public class CapexTraversonIntegrationTests {
 
     @Test
     public void envEndpointNotHidden() throws Exception {
-        Traverson traverson = new Traverson(new URI("http://localhost:" + this.port + "/greeting"), MediaTypes.HAL_JSON);
-        String greeting = traverson.follow("self").toObject("$.content");
-        assertThat(greeting).isEqualTo("Hello, World!");
+        Traverson traverson = new Traverson(new URI("http://localhost:" + this.port + "/"), MediaTypes.HAL_JSON);
+
+        int iteration = traverson.follow("self").toObject("$.current_iteration_number");
+
+        assertThat(iteration).isEqualTo(1);
     }
 }
