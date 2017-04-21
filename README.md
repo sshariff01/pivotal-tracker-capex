@@ -4,4 +4,4 @@ Pivotal Tracker CAPEX is a HATEOS-compliant API that provides insight into Capit
 
 ## Usage
 
-// See Swagger Docs
+See [Swagger Docs]({BASE_URL}/swagger-ui.html) for usage instructions.
