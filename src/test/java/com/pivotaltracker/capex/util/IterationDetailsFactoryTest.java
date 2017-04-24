@@ -1,6 +1,6 @@
 package com.pivotaltracker.capex.util;
 
-import com.pivotaltracker.capex.model.Iteration;
+import com.pivotaltracker.capex.model.IterationDetails;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,14 +11,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
-public class IterationFactoryTest {
+public class IterationDetailsFactoryTest {
 
     @Autowired
     IterationFactory iterationFactory;
 
     @Test
     public void should_returnIteration_when_givenIterationNumber() {
-        assertThat(iterationFactory.createIteration(1)).isInstanceOf(Iteration.class);
+        assertThat(iterationFactory.createIteration(1)).isInstanceOf(IterationDetails.class);
     }
 
 }

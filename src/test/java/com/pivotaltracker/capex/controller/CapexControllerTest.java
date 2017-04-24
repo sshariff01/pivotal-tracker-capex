@@ -1,6 +1,7 @@
 package com.pivotaltracker.capex.controller;
 
-import com.pivotaltracker.capex.model.Iteration;
+import com.pivotaltracker.capex.model.Feature;
+import com.pivotaltracker.capex.model.IterationDetails;
 import com.pivotaltracker.capex.model.ProjectDetails;
 import com.pivotaltracker.capex.util.CapexLinkBuilder;
 import com.pivotaltracker.capex.util.IterationFactory;
@@ -18,6 +19,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
@@ -43,18 +46,38 @@ public class CapexControllerTest {
         Link mockLink = mock(Link.class);
         when(capexLinkBuilder.buildLink()).thenReturn(mockLink);
 
-        when(projectDetailsRepository.getProjectDetails()).thenReturn(new ProjectDetails(1));
+        List<Feature> features = new ArrayList<>();
+        features.add(new Feature(1000000000));
+        when(projectDetailsRepository.getCurrentIterationDetails()).thenReturn(new IterationDetails(1, features));
     }
 
     @Test
-    public void should_return200OkWithCurrentIterationNumber_when_invokedToRetrieveIteration() throws IOException {
-        ResponseEntity<Iteration> responseEntity = capexController.iteration();
+    public void should_return200OkWithCurrentIterationNumber_when_invokedToRetrieveIterationDetails() throws IOException {
+        ResponseEntity<IterationDetails> responseEntity = capexController.iteration();
 
         verify(capexLinkBuilder).buildLink();
-        verify(projectDetailsRepository).getProjectDetails();
+        verify(projectDetailsRepository).getCurrentIterationDetails();
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(responseEntity.getBody()).isInstanceOf(Iteration.class);
-        assertThat(responseEntity.getBody().getCurrentIterationNumber()).isEqualTo(1);
+
+        IterationDetails iterationDetails = responseEntity.getBody();
+        assertThat(iterationDetails).isInstanceOf(IterationDetails.class);
+        assertThat(iterationDetails.getCurrentIterationNumber()).isEqualTo(1);
+    }
+
+    @Test
+    public void should_return200OkWithFeatureCycleTime_when_invokedToRetrieveIterationDetails() throws IOException {
+        ResponseEntity<IterationDetails> responseEntity = capexController.iteration();
+
+        verify(capexLinkBuilder).buildLink();
+        verify(projectDetailsRepository).getCurrentIterationDetails();
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+        IterationDetails iterationDetails = responseEntity.getBody();
+        assertThat(iterationDetails).isInstanceOf(IterationDetails.class);
+
+        List<Feature> stories = iterationDetails.getFeatures();
+        assertThat(stories.get(0).getCycleTime()).isEqualTo(1000000000);
+        assertThat(stories.get(0).getCycleTimeUnits()).isEqualTo("minutes");
     }
 
 }

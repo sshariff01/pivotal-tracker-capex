@@ -1,6 +1,6 @@
 package com.pivotaltracker.capex.controller;
 
-import com.pivotaltracker.capex.model.Iteration;
+import com.pivotaltracker.capex.model.IterationDetails;
 import com.pivotaltracker.capex.util.CapexLinkBuilder;
 import com.pivotaltracker.capex.util.IterationFactory;
 import com.pivotaltracker.capex.util.ProjectDetailsRepository;
@@ -30,12 +30,12 @@ public class CapexController {
 
     @ApiOperation(value = "/")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Success", response = Iteration.class)})
+            @ApiResponse(code = 200, message = "Success", response = IterationDetails.class)})
     @RequestMapping(path = "/", method = RequestMethod.GET)
-    public ResponseEntity<Iteration> iteration() throws IOException {
-        Iteration iteration = iterationFactory.createIteration(projectDetailsRepository.getProjectDetails().getCurrentIterationNumber());
-        iteration.add(capexLinkBuilder.buildLink());
+    public ResponseEntity<IterationDetails> iteration() throws IOException {
+        IterationDetails iterationDetails = projectDetailsRepository.getCurrentIterationDetails();
+        iterationDetails.add(capexLinkBuilder.buildLink());
 
-        return new ResponseEntity<>(iteration, HttpStatus.OK);
+        return new ResponseEntity<>(iterationDetails, HttpStatus.OK);
     }
 }
