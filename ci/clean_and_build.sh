@@ -1,4 +1,6 @@
 #!/bin/sh -x
 
 export TERM=xterm
-../gradlew clean build
+pushd ..
+./gradlew clean build
+popd
