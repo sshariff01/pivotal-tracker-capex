@@ -50,5 +50,5 @@ jobs:
       - name: capex-source-repo
       platform: linux
       run:
-        path: ./clean_and_build.sh
-        dir: capex-source-repo/ci
+        path: ci/clean_and_build.sh
+        dir: capex-source-repo/
