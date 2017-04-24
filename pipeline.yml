@@ -1,0 +1,53 @@
+---
+resources:
+- name: capex-source-repo
+  type: git
+  source:
+    uri: git@github.com:sshariff01/pivotal-tracker-capex.git
+    branch: master
+    private_key: |
+        -----BEGIN RSA PRIVATE KEY-----
+        MIIEowIBAAKCAQEAsFjVOKuwNL3TDyM8iOi4TletgOEgtYbaZAiFzGgRIYRkefwN
+        g6prI/Zz7d2nc6Cwf3mIKj0cPvDanChl3q8sslnIDUqPFYmOzpuEvjf8bAp99wRE
+        +Dwkm7mmWuyq/RQyIsIKxFiEmPAaupdQJNiN+tpa+T7gjX1r440asq7PMaExnQ9j
+        bwh68puOL5p8b4W0cVlavSfP3kw+nmVAvbel+w9vHsFMVlk2nD0G8YlTPPFL8Cub
+        pmdnc6iqOF5t+R/oftgjcmBXP3q7NxPuv3Dti9QNB2yURI8R57vFs17bLJbT9p36
+        ZqOY95Q26UkhNYlgVYQwKoAZ3KgrpnpTCzqGewIDAQABAoIBAD58W6EnBNrLYFv+
+        ylZgz93Cp5IBM4ve6seDVZWmUlukA85Nh6Rd4HTvwQhKACmyiJfCwoLlAHs08OFg
+        VyheveG8emxrPOQOx/FhndmhEOpflV7PvniPJxGe6NlS/wuJ+nHie9oy21ktyurO
+        7vD/Yt++O3oR05OPG4mX2Bv0YSpeMvnf/R7HvF5x5s5CAHgUlRN3vYS0UBnGv/p5
+        AjnosI9JJrjSfb5f6oX1QETRaBZ2/TUYJuqDgTpVzVCt/mh4hRw7syQy4+9Sk/aT
+        T1X9HquNRtvA2npWuE1AGnyW8bITLeg767nah4sCMNyqZ09FJlM9ZIGQbuuf2KzC
+        +ezpAgECgYEA3S/dTgdKjtm2ccIfIY2uwXyfJzmNZrXS8qp8ACK4eg5jqcNxY21g
+        MsdgBue0KmYuE/j8S1rcBJvDm55dwMdj9dXncBWlnzoxq7U9GIIHM/OoUW5Yngt2
+        UNxygOdY0HssrONliL/NZcJykqgUyTuNotHTh5hcnki+Inn/mM2QB4ECgYEAzBpD
+        I0l7hdvAsid+DxR+lviOAYxbrNg7RziUeEnqfD7vev0nUCbMmavmhbywqPYrT6Tu
+        Okimy3DrQaM0TRToOZouYD3+eJYGdhWGbbfArN2DNwifTZB1vuffX/PZQk8dYanJ
+        35X3lmKCXi0xY7WsZM+PgEGnIFegWRG3h0oAq/sCgYAssREsRPjhqEfe8HRN2Uzo
+        N4AI8u4JRM/czGnFtT5FG0cz9BOjHWSEnhhfDM4wivjgfDyuFSvDmp2JghQ7cY5X
+        C+N5mEYgyCdlJHe1zgAalS77VSp+tJ4xdHmGZjhh16GNRV0spmSgHQv9agzZJDlY
+        HsF48mY0bUpNuQzWGSLzAQKBgQCw4JWMUBMvJwkwm08AjJdECHUwXE3aVa3Rg/QO
+        5qfCMtxhLmBScr1e830cKzDBzEwuglU9x1Zc+ie2w1QA9PxnZvmHyFHueL1yuia8
+        kMD2TiV3nQ5JLscLwXBwfCes8lkZGQZssE9XUVl/ehTSP0/+MW5ADSVjvuykI9lz
+        8irw3wKBgA243UBMCGA2JQXrYHtuii5xlDQ6DfZeS00dswRMG2NAGhRw9kEahYwb
+        UagRThngwnHNYqRjy06i26OYKBQIXTRLqCV1eXXnL8b78riZls5KWbS2moKVUv6L
+        GFYMFKf+PtdPR0mS8oPHpZ5jzS+Iku1xhiZkKbGfah0pahCaCWEk
+        -----END RSA PRIVATE KEY-----
+
+jobs:
+- name: hello-world
+  plan:
+  - get: capex-source-repo
+    params: {depth: 100}
+    check: true
+  - task: say-hello
+    config:
+      image_resource:
+        type: docker-image
+        source: {repository: gradle}
+      inputs:
+      - name: capex-source-repo
+      platform: linux
+      run:
+        path: gradle.sh
+        dir: capex-source-repo
