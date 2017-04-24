@@ -2,9 +2,11 @@ package com.pivotaltracker.capex.controller;
 
 import com.pivotaltracker.capex.model.Iteration;
 import com.pivotaltracker.capex.model.ProjectDetails;
+import com.pivotaltracker.capex.model.IterationDetails;
 import com.pivotaltracker.capex.util.CapexLinkBuilder;
 import com.pivotaltracker.capex.util.IterationFactory;
 import com.pivotaltracker.capex.util.ProjectDetailsRepository;
+import com.pivotaltracker.capex.util.IterationDetailsRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,6 +37,9 @@ public class CapexControllerTest {
     @Mock
     ProjectDetailsRepository projectDetailsRepository;
 
+    @Mock
+    IterationDetailsRepository iterationDetailsRepository;
+
     @InjectMocks
     CapexController capexController;
 
@@ -44,6 +49,7 @@ public class CapexControllerTest {
         when(capexLinkBuilder.buildLink()).thenReturn(mockLink);
 
         when(projectDetailsRepository.getProjectDetails()).thenReturn(new ProjectDetails(1));
+        when(iterationDetailsRepository.getIterationDetails(1)).thenReturn(new IterationDetails("2017-04-24T07:00:00", "2017-05-01T07:00:00"));
     }
 
     @Test
@@ -52,9 +58,13 @@ public class CapexControllerTest {
 
         verify(capexLinkBuilder).buildLink();
         verify(projectDetailsRepository).getProjectDetails();
+        verify(iterationDetailsRepository).getIterationDetails(1);
+
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(responseEntity.getBody()).isInstanceOf(Iteration.class);
         assertThat(responseEntity.getBody().getCurrentIterationNumber()).isEqualTo(1);
+        assertThat(responseEntity.getBody().getCurrentIterationStart()).isEqualTo("2017-04-24");
+        assertThat(responseEntity.getBody().getCurrentIterationFinish()).isEqualTo("2017-05-01");
     }
 
 }

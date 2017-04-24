@@ -18,7 +18,7 @@ public class IterationFactoryTest {
 
     @Test
     public void should_returnIteration_when_givenIterationNumber() {
-        assertThat(iterationFactory.createIteration(1)).isInstanceOf(Iteration.class);
+        assertThat(iterationFactory.createIteration(1, "a string", "another string")).isInstanceOf(Iteration.class);
     }
 
 }

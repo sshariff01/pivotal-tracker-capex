@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class IterationFactory {
 
-    public Iteration createIteration(int iterationNumber) {
-        return new Iteration(iterationNumber);
+    public Iteration createIteration(int iterationNumber, String startDate, String finishDate) {
+        return new Iteration(iterationNumber, startDate, finishDate);
     }
 }

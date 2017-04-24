@@ -28,4 +28,13 @@ public class CapexHttpClientTest {
         assertThat(responseBody.has("current_iteration_number")).isTrue();
     }
 
+    @Test
+    public void should_returnIterationDetails() throws JSONException {
+        ResponseEntity responseEntity = capexHttpClient.getIterationDetails(1);
+
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        JSONObject responseBody = new JSONObject(responseEntity.getBody().toString());
+        assertThat(responseBody.has("start")).isTrue();
+        assertThat(responseBody.has("finish")).isTrue();
+    }
 }
