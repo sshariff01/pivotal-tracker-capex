@@ -1,3 +1,3 @@
 #!/bin/sh
 export TERM=xterm
-gradle -version
+gradle clean build
