@@ -4,7 +4,7 @@ resources:
   type: git
   source:
     uri: git@github.com:sshariff01/pivotal-tracker-capex.git
-    branch: master
+    branch: test
     private_key: |
         -----BEGIN RSA PRIVATE KEY-----
         MIIEowIBAAKCAQEAsFjVOKuwNL3TDyM8iOi4TletgOEgtYbaZAiFzGgRIYRkefwN
@@ -51,4 +51,4 @@ jobs:
       platform: linux
       run:
         path: ./clean_and_build.sh
-        dir: capex-source-repo
+        dir: capex-source-repo/ci
