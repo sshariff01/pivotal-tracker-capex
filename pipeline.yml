@@ -4,7 +4,7 @@ resources:
   type: git
   source:
     uri: git@github.com:sshariff01/pivotal-tracker-capex.git
-    branch: master
+    branch: concourse-test
     private_key: |
         -----BEGIN RSA PRIVATE KEY-----
         MIIEowIBAAKCAQEAsFjVOKuwNL3TDyM8iOi4TletgOEgtYbaZAiFzGgRIYRkefwN
@@ -49,5 +49,5 @@ jobs:
       - name: capex-source-repo
       platform: linux
       run:
-        path: gradle.sh
+        path: ./gradle.sh
         dir: capex-source-repo
