@@ -1,8 +1,8 @@
 package com.pivotaltracker.capex.controller;
 
 import com.pivotaltracker.capex.model.Iteration;
-import com.pivotaltracker.capex.model.ProjectDetails;
-import com.pivotaltracker.capex.model.IterationDetails;
+import com.pivotaltracker.capex.http.response.ProjectDetails;
+import com.pivotaltracker.capex.http.response.IterationDetails;
 import com.pivotaltracker.capex.util.CapexLinkBuilder;
 import com.pivotaltracker.capex.util.IterationFactory;
 import com.pivotaltracker.capex.util.ProjectDetailsRepository;

@@ -36,6 +36,18 @@ public class CapexAcceptanceTest {
     }
 
     @Test
+    public void should_respondWith200Ok_with_currentIterationStartAndFinish_when_GET_baseUrl() throws Exception {
+        MockHttpServletRequestBuilder requestBuilder = get("/");
+        MvcResult response = mockMvc.perform(requestBuilder)
+                .andExpect(status().isOk())
+                .andReturn();
+
+        JSONObject responseBody = new JSONObject(response.getResponse().getContentAsString());
+        assertThat(responseBody.get("current_iteration_start")).isInstanceOf(String.class);
+        assertThat(responseBody.get("current_iteration_finish")).isInstanceOf(String.class);
+    }
+
+    @Test
     public void should_respondWith200Ok_with_linkToHome_when_GET_baseUrl() throws Exception {
         MockHttpServletRequestBuilder requestBuilder = get("/");
         MvcResult response = mockMvc.perform(requestBuilder)

@@ -2,7 +2,7 @@ package com.pivotaltracker.capex.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pivotaltracker.capex.http.CapexHttpClient;
-import com.pivotaltracker.capex.model.ProjectDetails;
+import com.pivotaltracker.capex.http.response.ProjectDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;

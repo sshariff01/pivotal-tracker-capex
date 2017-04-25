@@ -2,7 +2,7 @@ package com.pivotaltracker.capex.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pivotaltracker.capex.http.CapexHttpClient;
-import com.pivotaltracker.capex.model.IterationDetails;
+import com.pivotaltracker.capex.http.response.IterationDetails;
 import org.json.JSONException;
 import org.junit.Before;
 import org.junit.Test;
