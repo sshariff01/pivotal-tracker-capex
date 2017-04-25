@@ -39,9 +39,9 @@ public class CycleTimeDetailsRepositoryTest {
     @Before
     public void setUp() {
         String mockResponseBody = "[ " +
-                "{\"total_cycle_time\": 100, \"story_id\": 10}, " +
-                "{\"total_cycle_time\": 100, \"story_id\": 20}, " +
-                "{\"total_cycle_time\": 100, \"story_id\": 30} " +
+                "{\"total_cycle_time\": 60000, \"story_id\": 10}, " +
+                "{\"total_cycle_time\": 60000, \"story_id\": 20}, " +
+                "{\"total_cycle_time\": 60000, \"story_id\": 30} " +
                 "]";
         ResponseEntity<String> mockCycleTimeDetailsResponse = new ResponseEntity<>(mockResponseBody, HttpStatus.OK);
         when(capexHttpClient.getCycleTimeDetails(1)).thenReturn(mockCycleTimeDetailsResponse);
@@ -62,7 +62,7 @@ public class CycleTimeDetailsRepositoryTest {
         int totalIterationFeatureCycleTime = cycleTimeDetailsRepository.getTotalIterationFeatureCycleTime(1, Arrays.asList(story));
 
         verify(capexHttpClient).getCycleTimeDetails(1);
-        assertThat(totalIterationFeatureCycleTime).isEqualTo(100);
+        assertThat(totalIterationFeatureCycleTime).isEqualTo(1);
     }
 
     @Test
@@ -74,7 +74,7 @@ public class CycleTimeDetailsRepositoryTest {
         int totalIterationFeatureCycleTime = cycleTimeDetailsRepository.getTotalIterationFeatureCycleTime(1, Arrays.asList(story1, story2, story3));
 
         verify(capexHttpClient).getCycleTimeDetails(1);
-        assertThat(totalIterationFeatureCycleTime).isEqualTo(300);
+        assertThat(totalIterationFeatureCycleTime).isEqualTo(3);
     }
 
     @Test

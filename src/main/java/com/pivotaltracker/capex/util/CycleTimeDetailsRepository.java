@@ -44,7 +44,7 @@ public class CycleTimeDetailsRepository {
             }
         }
 
-        return totalFeaturesCycleTime;
+        return (totalFeaturesCycleTime / 1000) / 60;
     }
 
 }
