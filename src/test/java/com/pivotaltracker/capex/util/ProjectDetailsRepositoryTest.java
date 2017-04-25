@@ -2,6 +2,7 @@ package com.pivotaltracker.capex.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pivotaltracker.capex.http.CapexHttpClient;
+import com.pivotaltracker.capex.model.IterationDetails;
 import com.pivotaltracker.capex.model.ProjectDetails;
 import org.json.JSONException;
 import org.junit.Before;
@@ -18,6 +19,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -38,14 +40,22 @@ public class ProjectDetailsRepositoryTest {
     public void setUp() throws JSONException {
         ResponseEntity<String> mockProjectDetailsResponse = new ResponseEntity<>("{\"current_iteration_number\": 1000}", HttpStatus.OK);
         when(capexHttpClient.getProjectDetails()).thenReturn(mockProjectDetailsResponse);
+
+        ResponseEntity<String> mockIterationDetailsResponse = new ResponseEntity<>("{ \"stories\": [ { \"id\": 558, \"story_type\": \"feature\", \"current_state\": \"accepted\" } ] }", HttpStatus.OK);
+        when(capexHttpClient.getIterationDetails(any(Integer.class))).thenReturn(mockIterationDetailsResponse);
+
+        ResponseEntity<String> mockCycleTimeResponse = new ResponseEntity<>("[ { \"total_cycle_time\": 363231000, \"story_id\": 558 } ]", HttpStatus.OK);
+        when(capexHttpClient.getCycleTime(any(Integer.class))).thenReturn(mockCycleTimeResponse);
     }
 
     @Test
-    public void should_returnProjectDetails() throws IOException {
-        ProjectDetails projectDetails = projectDetailsRepository.getProjectDetails();
+    public void should_returnCurrentIterationDetails() throws IOException {
+        IterationDetails iterationDetails = projectDetailsRepository.getCurrentIterationDetails();
 
         verify(capexHttpClient).getProjectDetails();
-        assertThat(projectDetails.getCurrentIterationNumber()).isInstanceOf(Integer.class);
+        verify(capexHttpClient).getIterationDetails(1000);
+        verify(capexHttpClient).getCycleTime(1000);
+        assertThat(iterationDetails.getCurrentIterationNumber()).isEqualTo(1000);
     }
 
 }

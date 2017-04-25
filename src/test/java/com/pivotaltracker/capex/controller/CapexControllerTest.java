@@ -2,7 +2,7 @@ package com.pivotaltracker.capex.controller;
 
 import com.pivotaltracker.capex.model.Feature;
 import com.pivotaltracker.capex.model.IterationDetails;
-import com.pivotaltracker.capex.model.ProjectDetails;
+import com.pivotaltracker.capex.model.Story;
 import com.pivotaltracker.capex.util.CapexLinkBuilder;
 import com.pivotaltracker.capex.util.IterationFactory;
 import com.pivotaltracker.capex.util.ProjectDetailsRepository;
@@ -46,9 +46,9 @@ public class CapexControllerTest {
         Link mockLink = mock(Link.class);
         when(capexLinkBuilder.buildLink()).thenReturn(mockLink);
 
-        List<Feature> features = new ArrayList<>();
-        features.add(new Feature(1000000000));
-        when(projectDetailsRepository.getCurrentIterationDetails()).thenReturn(new IterationDetails(1, features));
+        List<Story> story = new ArrayList<>();
+        story.add(new Story(1000000000));
+        when(projectDetailsRepository.getCurrentIterationDetails()).thenReturn(new IterationDetails(1, story));
     }
 
     @Test
@@ -75,9 +75,9 @@ public class CapexControllerTest {
         IterationDetails iterationDetails = responseEntity.getBody();
         assertThat(iterationDetails).isInstanceOf(IterationDetails.class);
 
-        List<Feature> stories = iterationDetails.getFeatures();
-        assertThat(stories.get(0).getCycleTime()).isEqualTo(1000000000);
-        assertThat(stories.get(0).getCycleTimeUnits()).isEqualTo("minutes");
+        List<Story> stories = iterationDetails.getStories();
+        assertThat(stories.get(0).getTotalCycleTime()).isEqualTo(1000000000);
+//     assertThat(stories.get(0).getCycleTimeUnits()).isEqualTo("minutes");
     }
 
 }

@@ -2,18 +2,27 @@ package com.pivotaltracker.capex.model;
 
 public class Feature {
 
-    private int cycleTime;
+    private int totalCycleTime;
+
     private String cycleTimeUnits = "minutes";
 
-    public Feature(int cycleTime) {
-        this.cycleTime = cycleTime;
+    public Feature(int totalCycleTime) {
+        this.totalCycleTime = totalCycleTime;
     }
 
-    public int getCycleTime() {
-        return cycleTime;
+    public int getTotalCycleTime() {
+        return totalCycleTime;
     }
 
     public String getCycleTimeUnits() {
         return cycleTimeUnits;
+    }
+
+    public int getId() {
+        return -1;
+    }
+
+    public void setTotalCycleTime(int totalCycleTime) {
+        this.totalCycleTime = totalCycleTime;
     }
 }

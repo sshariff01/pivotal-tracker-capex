@@ -8,13 +8,13 @@ import java.util.List;
 
 public class IterationDetails extends ResourceSupport {
 
-    private final int currentIterationNumber;
-    private List<Feature> features;
+    private int currentIterationNumber;
+    private List<Story> stories;
 
     @JsonCreator
-    public IterationDetails(int currentIterationNumber, List<Feature> features) {
+    public IterationDetails(int currentIterationNumber, List<Story> stories) {
         this.currentIterationNumber = currentIterationNumber;
-        this.features = features;
+        this.stories = stories;
     }
 
     @JsonProperty("current_iteration_number")
@@ -22,7 +22,7 @@ public class IterationDetails extends ResourceSupport {
         return currentIterationNumber;
     }
 
-    public List<Feature> getFeatures() {
-        return features;
+    public List<Story> getStories() {
+        return stories;
     }
 }

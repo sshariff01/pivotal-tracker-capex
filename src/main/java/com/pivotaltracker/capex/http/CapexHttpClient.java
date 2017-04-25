@@ -32,4 +32,12 @@ public class CapexHttpClient {
 
         return responseEntity;
     }
+
+    public ResponseEntity<String> getIterationDetails(int currentIterationNumber) {
+        return null;
+    }
+
+    public ResponseEntity<String> getCycleTime(int currentIterationNumber) {
+        return null;
+    }
 }
