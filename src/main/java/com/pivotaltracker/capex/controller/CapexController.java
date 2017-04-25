@@ -1,8 +1,8 @@
 package com.pivotaltracker.capex.controller;
 
-import com.pivotaltracker.capex.model.Iteration;
 import com.pivotaltracker.capex.http.response.IterationDetails;
 import com.pivotaltracker.capex.http.response.ProjectDetails;
+import com.pivotaltracker.capex.model.Iteration;
 import com.pivotaltracker.capex.util.*;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -39,11 +39,14 @@ public class CapexController {
     @RequestMapping(path = "/", method = RequestMethod.GET)
     public ResponseEntity<Iteration> iteration() throws IOException {
         ProjectDetails projectDetails  = projectDetailsRepository.getProjectDetails();
-        IterationDetails iterationDetails  = iterationDetailsRepository.getIterationDetails(projectDetails.getCurrentIterationNumber());
-        int totalFeatureCycleTime = cycleTimeDetailsRepository.getTotalIterationFeatureCycleTime(projectDetails.getCurrentIterationNumber(), iterationDetails.getCurrentIterationStories());
+        int currentIterationNumber = projectDetails.getCurrentIterationNumber();
+        IterationDetails iterationDetails  = iterationDetailsRepository.getIterationDetails(currentIterationNumber);
+        int totalFeatureCycleTime = cycleTimeDetailsRepository.getTotalIterationFeatureCycleTime(
+                currentIterationNumber,
+                iterationDetails.getCurrentIterationStories());
 
         Iteration iteration = iterationFactory.createIteration(
-                projectDetails.getCurrentIterationNumber(),
+                currentIterationNumber,
                 iterationDetails.getCurrentIterationStart(),
                 iterationDetails.getCurrentIterationFinish(),
                 totalFeatureCycleTime);

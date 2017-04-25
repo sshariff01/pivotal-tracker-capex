@@ -18,42 +18,45 @@ public class CapexHttpClient {
     @Value("${pivotalTracker.projectId}")
     private String projectId;
 
+    @Value("${pivotalTracker.baseUrl}")
+    private String baseUrl;
+
     @Autowired
     private RestTemplate restTemplate;
 
     public ResponseEntity<String> getProjectDetails() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("X-TrackerToken", apiToken);
-        HttpEntity<HttpHeaders> entity = new HttpEntity<>(null, headers);
+        HttpEntity<HttpHeaders> headers = getHttpHeadersHttpEntity();
 
         ResponseEntity<String>  responseEntity = restTemplate.exchange(
-                "https://www.pivotaltracker.com/services/v5/projects/" + projectId,
-                HttpMethod.GET, entity, String.class);
+                baseUrl + projectId,
+                HttpMethod.GET, headers, String.class);
 
         return responseEntity;
     }
 
     public ResponseEntity<String> getIterationDetails(int iterationNumber) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("X-TrackerToken", apiToken);
-        HttpEntity<HttpHeaders> entity = new HttpEntity<>(null, headers);
+        HttpEntity<HttpHeaders> headers = getHttpHeadersHttpEntity();
 
         ResponseEntity<String>  responseEntity = restTemplate.exchange(
-                "https://www.pivotaltracker.com/services/v5/projects/" + projectId + "/iterations/" + iterationNumber,
-                HttpMethod.GET, entity, String.class);
+                baseUrl + projectId + "/iterations/" + iterationNumber,
+                HttpMethod.GET, headers, String.class);
 
         return responseEntity;
     }
 
     public ResponseEntity<String> getCycleTimeDetails(int iterationNumber) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("X-TrackerToken", apiToken);
-        HttpEntity<HttpHeaders> entity = new HttpEntity<>(null, headers);
+        HttpEntity<HttpHeaders> headers = getHttpHeadersHttpEntity();
 
         ResponseEntity<String>  responseEntity = restTemplate.exchange(
-                "https://www.pivotaltracker.com/services/v5/projects/" + projectId + "/iterations/" + iterationNumber + "/analytics/cycle_time_details",
-                HttpMethod.GET, entity, String.class);
+                baseUrl + projectId + "/iterations/" + iterationNumber + "/analytics/cycle_time_details",
+                HttpMethod.GET, headers, String.class);
 
         return responseEntity;
+    }
+
+    private HttpEntity<HttpHeaders> getHttpHeadersHttpEntity() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("X-TrackerToken", apiToken);
+        return new HttpEntity<>(null, headers);
     }
 }

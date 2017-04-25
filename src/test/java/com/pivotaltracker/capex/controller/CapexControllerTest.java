@@ -1,10 +1,9 @@
 package com.pivotaltracker.capex.controller;
 
-import com.pivotaltracker.capex.http.response.CycleTimeDetails;
+import com.pivotaltracker.capex.http.response.IterationDetails;
+import com.pivotaltracker.capex.http.response.ProjectDetails;
 import com.pivotaltracker.capex.http.response.Story;
 import com.pivotaltracker.capex.model.Iteration;
-import com.pivotaltracker.capex.http.response.ProjectDetails;
-import com.pivotaltracker.capex.http.response.IterationDetails;
 import com.pivotaltracker.capex.util.*;
 import org.junit.Before;
 import org.junit.Test;
