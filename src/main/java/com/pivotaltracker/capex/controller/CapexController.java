@@ -44,12 +44,17 @@ public class CapexController {
         int totalFeatureCycleTime = cycleTimeDetailsRepository.getTotalIterationFeatureCycleTime(
                 currentIterationNumber,
                 iterationDetails.getCurrentIterationStories());
+        int totalBugCycleTime = cycleTimeDetailsRepository.getTotalIterationBugCycleTime(
+                currentIterationNumber,
+                iterationDetails.getCurrentIterationStories());
+
 
         Iteration iteration = iterationFactory.createIteration(
                 currentIterationNumber,
                 iterationDetails.getCurrentIterationStart(),
                 iterationDetails.getCurrentIterationFinish(),
-                totalFeatureCycleTime);
+                totalFeatureCycleTime,
+                totalBugCycleTime);
         iteration.add(capexLinkBuilder.buildLink());
 
         return new ResponseEntity<>(iteration, HttpStatus.OK);

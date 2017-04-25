@@ -48,7 +48,7 @@ public class CycleTimeDetailsRepositoryTest {
     }
 
     @Test
-    public void should_returnZero_given_noStories() throws IOException {
+    public void should_returnZero_when_invokedGetTotalIterationFeatureCycleTime_given_noStories() throws IOException {
         int totalIterationFeatureCycleTime = cycleTimeDetailsRepository.getTotalIterationFeatureCycleTime(1, new ArrayList<>());
 
         verify(capexHttpClient).getCycleTimeDetails(1);
@@ -97,5 +97,57 @@ public class CycleTimeDetailsRepositoryTest {
 
         verify(capexHttpClient).getCycleTimeDetails(1);
         assertThat(totalIterationFeatureCycleTime).isEqualTo(0);
+    }
+
+    @Test
+    public void should_returnZero_when_invokedGetTotalIterationBugCycleTime_given_noStories() throws IOException {
+        int totalIterationBugCycleTime = cycleTimeDetailsRepository.getTotalIterationBugCycleTime(1, new ArrayList<>());
+
+        verify(capexHttpClient).getCycleTimeDetails(1);
+        assertThat(totalIterationBugCycleTime).isEqualTo(0);
+    }
+
+    @Test
+    public void should_returnTotalIterationBugCycleTime_given_oneBug() throws IOException {
+        Story story = new Story(10,"bug", "accepted");
+
+        int totalIterationBugCycleTime = cycleTimeDetailsRepository.getTotalIterationBugCycleTime(1, Arrays.asList(story));
+
+        verify(capexHttpClient).getCycleTimeDetails(1);
+        assertThat(totalIterationBugCycleTime).isEqualTo(1);
+    }
+
+    @Test
+    public void should_returnTotalBugCycleTime_given_multipleBugs() throws IOException {
+        Story story1 = new Story(10,"bug", "accepted");
+        Story story2 = new Story(20,"bug", "accepted");
+        Story story3 = new Story(30,"bug", "accepted");
+
+        int totalIterationBugCycleTime = cycleTimeDetailsRepository.getTotalIterationBugCycleTime(1, Arrays.asList(story1, story2, story3));
+
+        verify(capexHttpClient).getCycleTimeDetails(1);
+        assertThat(totalIterationBugCycleTime).isEqualTo(3);
+    }
+
+    @Test
+    public void should_returnZero_given_noStoriesThatAreBugs() throws IOException {
+        Story story1 = new Story(10,"not a bug", "accepted");
+        Story story2 = new Story(20,"something that is not a bug", "accepted");
+
+        int totalIterationBugCycleTime = cycleTimeDetailsRepository.getTotalIterationBugCycleTime(1, Arrays.asList(story1, story2));
+
+        verify(capexHttpClient).getCycleTimeDetails(1);
+        assertThat(totalIterationBugCycleTime).isEqualTo(0);
+    }
+
+    @Test
+    public void should_returnZero_given_noAcceptedBugs() throws IOException {
+        Story story1 = new Story(10,"bug", "bad");
+        Story story2 = new Story(20,"bug", "done horribly");
+
+        int totalIterationBugCycleTime = cycleTimeDetailsRepository.getTotalIterationBugCycleTime(1, Arrays.asList(story1, story2));
+
+        verify(capexHttpClient).getCycleTimeDetails(1);
+        assertThat(totalIterationBugCycleTime).isEqualTo(0);
     }
 }

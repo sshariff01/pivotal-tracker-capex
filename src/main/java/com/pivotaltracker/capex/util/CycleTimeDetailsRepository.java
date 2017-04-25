@@ -47,4 +47,26 @@ public class CycleTimeDetailsRepository {
         return (totalFeaturesCycleTime / 1000) / 60;
     }
 
+    public int getTotalIterationBugCycleTime(int currentIterationNumber, List<Story> stories) throws IOException{
+        ResponseEntity<String> cycleTimeDetailsResponse = capexHttpClient.getCycleTimeDetails(currentIterationNumber);
+        List<CycleTimeDetails> cycleTimeDetails = Arrays.asList(objectMapper.readValue(cycleTimeDetailsResponse.getBody(), CycleTimeDetails[].class));
+
+        List<Story> acceptedBugs = stories.stream()
+                .filter(story -> story.getStoryType().equals("bug") && story.getStoryState().equals("accepted"))
+                .collect(Collectors.toList());
+
+        Map<Integer, Story> idToStory = new HashMap<>();
+        for (Story story : acceptedBugs) {
+            idToStory.put(story.getStoryId(), story);
+        }
+        int totalBugsCycleTime = 0;
+        for (CycleTimeDetails cycleTimeDetail : cycleTimeDetails) {
+            int storyId = cycleTimeDetail.getStoryId();
+            if (idToStory.containsKey(storyId)) {
+                totalBugsCycleTime += cycleTimeDetail.getTotalCycleTime();
+            }
+        }
+
+        return (totalBugsCycleTime / 1000) / 60;
+    }
 }

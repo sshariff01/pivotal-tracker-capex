@@ -61,6 +61,7 @@ public class CapexControllerTest {
                         "2017-05-01T07:00:00",
                         stories));
         when(cycleTimeDetailsRepository.getTotalIterationFeatureCycleTime(1, stories)).thenReturn(850);
+        when(cycleTimeDetailsRepository.getTotalIterationBugCycleTime(1, stories)).thenReturn(100);
     }
 
     @Test
@@ -79,7 +80,7 @@ public class CapexControllerTest {
     }
 
     @Test
-    public void should_return200OkWithFeatureCycleTime_when_GET_baseUrl() throws IOException {
+    public void should_return200OkWithTotalFeatureCycleTime_when_GET_baseUrl() throws IOException {
         ResponseEntity<Iteration> responseEntity = capexController.iteration();
 
         verify(capexLinkBuilder).buildLink();
@@ -92,6 +93,22 @@ public class CapexControllerTest {
         assertThat(iteration).isInstanceOf(Iteration.class);
         assertThat(iteration.getTotalFeatureCycleTime()).isEqualTo(850);
         assertThat(iteration.getTotalFeatureCycleTimeUnits()).isEqualTo("minutes");
+    }
+
+    @Test
+    public void should_return200OkWithTotalBugCycleTime_when_GET_baseUrl() throws IOException {
+        ResponseEntity<Iteration> responseEntity = capexController.iteration();
+
+        verify(capexLinkBuilder).buildLink();
+        verify(projectDetailsRepository).getProjectDetails();
+        verify(iterationDetailsRepository).getIterationDetails(1);
+        verify(cycleTimeDetailsRepository).getTotalIterationBugCycleTime(1,stories);
+
+        Iteration iteration = responseEntity.getBody();
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(iteration).isInstanceOf(Iteration.class);
+        assertThat(iteration.getTotalBugCycleTime()).isEqualTo(100);
+        assertThat(iteration.getTotalBugCycleTimeUnits()).isEqualTo("minutes");
     }
 
 }

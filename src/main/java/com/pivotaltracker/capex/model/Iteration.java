@@ -10,13 +10,15 @@ public class Iteration extends ResourceSupport {
     private final String currentIterationStart;
     private final String currentIterationFinish;
     private final int totalFeatureCycleTime;
+    private final int totalBugCycleTime;
 
     @JsonCreator
-    public Iteration(int currentIterationNumber, String currentIterationStart, String currentIterationFinish, int totalFeatureCycleTime) {
+    public Iteration(int currentIterationNumber, String currentIterationStart, String currentIterationFinish, int totalFeatureCycleTime, int totalBugCycleTime) {
         this.currentIterationNumber = currentIterationNumber;
         this.currentIterationStart = currentIterationStart;
         this.currentIterationFinish = currentIterationFinish;
         this.totalFeatureCycleTime = totalFeatureCycleTime;
+        this.totalBugCycleTime = totalBugCycleTime;
     }
 
     @JsonProperty("current_iteration_number")
@@ -41,6 +43,16 @@ public class Iteration extends ResourceSupport {
 
     @JsonProperty("feature_cycle_time_units")
     public String getTotalFeatureCycleTimeUnits() {
+        return "minutes";
+    }
+
+    @JsonProperty("bug_cycle_time")
+    public int getTotalBugCycleTime() {
+        return totalBugCycleTime;
+    }
+
+    @JsonProperty("bug_cycle_time_units")
+    public String getTotalBugCycleTimeUnits() {
         return "minutes";
     }
 }

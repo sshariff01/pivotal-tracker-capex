@@ -73,4 +73,17 @@ public class CapexAcceptanceTest {
         assertThat(responseBody.get("feature_cycle_time")).isInstanceOf(Integer.class);
         assertThat(responseBody.get("feature_cycle_time_units")).isEqualTo("minutes");
     }
+    @Test
+    public void should_respondWith200Ok_with_totalBugCycleTimeForCurrentIteration_when_GET_baseUrl() throws Exception {
+        MockHttpServletRequestBuilder requestBuilder = get("/");
+        MvcResult response = mockMvc.perform(requestBuilder)
+                .andExpect(status().isOk())
+                .andReturn();
+
+        JSONObject responseBody = new JSONObject(response.getResponse().getContentAsString());
+        assertThat(responseBody.get("bug_cycle_time")).isInstanceOf(Integer.class);
+        assertThat(responseBody.get("bug_cycle_time_units")).isEqualTo("minutes");
+    }
+
+
 }
