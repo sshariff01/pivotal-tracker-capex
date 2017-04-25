@@ -1,12 +1,11 @@
 package com.pivotaltracker.capex.controller;
 
+import com.pivotaltracker.capex.http.response.CycleTimeDetails;
+import com.pivotaltracker.capex.http.response.Story;
 import com.pivotaltracker.capex.model.Iteration;
 import com.pivotaltracker.capex.http.response.ProjectDetails;
 import com.pivotaltracker.capex.http.response.IterationDetails;
-import com.pivotaltracker.capex.util.CapexLinkBuilder;
-import com.pivotaltracker.capex.util.IterationFactory;
-import com.pivotaltracker.capex.util.ProjectDetailsRepository;
-import com.pivotaltracker.capex.util.IterationDetailsRepository;
+import com.pivotaltracker.capex.util.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,6 +19,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
@@ -40,8 +41,13 @@ public class CapexControllerTest {
     @Mock
     IterationDetailsRepository iterationDetailsRepository;
 
+    @Mock
+    CycleTimeDetailsRepository cycleTimeDetailsRepository;
+
     @InjectMocks
     CapexController capexController;
+
+    List<Story> stories = Arrays.asList(mock(Story.class));
 
     @Before
     public void setUp() throws IOException {
@@ -49,7 +55,13 @@ public class CapexControllerTest {
         when(capexLinkBuilder.buildLink()).thenReturn(mockLink);
 
         when(projectDetailsRepository.getProjectDetails()).thenReturn(new ProjectDetails(1));
-        when(iterationDetailsRepository.getIterationDetails(1)).thenReturn(new IterationDetails("2017-04-24T07:00:00", "2017-05-01T07:00:00"));
+
+        when(iterationDetailsRepository.getIterationDetails(1))
+                .thenReturn(new IterationDetails(
+                        "2017-04-24T07:00:00",
+                        "2017-05-01T07:00:00",
+                        stories));
+        when(cycleTimeDetailsRepository.getTotalIterationFeatureCycleTime(1, stories)).thenReturn(850);
     }
 
     @Test
@@ -65,6 +77,22 @@ public class CapexControllerTest {
         assertThat(responseEntity.getBody().getCurrentIterationNumber()).isEqualTo(1);
         assertThat(responseEntity.getBody().getCurrentIterationStart()).isEqualTo("2017-04-24");
         assertThat(responseEntity.getBody().getCurrentIterationFinish()).isEqualTo("2017-05-01");
+    }
+
+    @Test
+    public void should_return200OkWithFeatureCycleTime_when_GET_baseUrl() throws IOException {
+        ResponseEntity<Iteration> responseEntity = capexController.iteration();
+
+        verify(capexLinkBuilder).buildLink();
+        verify(projectDetailsRepository).getProjectDetails();
+        verify(iterationDetailsRepository).getIterationDetails(1);
+        verify(cycleTimeDetailsRepository).getTotalIterationFeatureCycleTime(1,stories);
+
+        Iteration iteration = responseEntity.getBody();
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(iteration).isInstanceOf(Iteration.class);
+        assertThat(iteration.getTotalFeatureCycleTime()).isEqualTo(850);
+        assertThat(iteration.getTotalFeatureCycleTimeUnits()).isEqualTo("minutes");
     }
 
 }

@@ -3,10 +3,7 @@ package com.pivotaltracker.capex.controller;
 import com.pivotaltracker.capex.model.Iteration;
 import com.pivotaltracker.capex.http.response.IterationDetails;
 import com.pivotaltracker.capex.http.response.ProjectDetails;
-import com.pivotaltracker.capex.util.CapexLinkBuilder;
-import com.pivotaltracker.capex.util.IterationFactory;
-import com.pivotaltracker.capex.util.ProjectDetailsRepository;
-import com.pivotaltracker.capex.util.IterationDetailsRepository;
+import com.pivotaltracker.capex.util.*;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -33,6 +30,9 @@ public class CapexController {
     @Autowired
     private IterationDetailsRepository iterationDetailsRepository;
 
+    @Autowired
+    private CycleTimeDetailsRepository cycleTimeDetailsRepository;
+
     @ApiOperation(value = "/")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Success", response = Iteration.class)})
@@ -40,8 +40,13 @@ public class CapexController {
     public ResponseEntity<Iteration> iteration() throws IOException {
         ProjectDetails projectDetails  = projectDetailsRepository.getProjectDetails();
         IterationDetails iterationDetails  = iterationDetailsRepository.getIterationDetails(projectDetails.getCurrentIterationNumber());
+        int totalFeatureCycleTime = cycleTimeDetailsRepository.getTotalIterationFeatureCycleTime(projectDetails.getCurrentIterationNumber(), iterationDetails.getCurrentIterationStories());
 
-        Iteration iteration = iterationFactory.createIteration(projectDetails.getCurrentIterationNumber(), iterationDetails.getCurrentIterationStart(), iterationDetails.getCurrentIterationFinish());
+        Iteration iteration = iterationFactory.createIteration(
+                projectDetails.getCurrentIterationNumber(),
+                iterationDetails.getCurrentIterationStart(),
+                iterationDetails.getCurrentIterationFinish(),
+                totalFeatureCycleTime);
         iteration.add(capexLinkBuilder.buildLink());
 
         return new ResponseEntity<>(iteration, HttpStatus.OK);

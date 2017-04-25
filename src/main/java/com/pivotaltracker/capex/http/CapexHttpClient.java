@@ -44,4 +44,16 @@ public class CapexHttpClient {
 
         return responseEntity;
     }
+
+    public ResponseEntity<String> getCycleTimeDetails(int iterationNumber) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("X-TrackerToken", apiToken);
+        HttpEntity<HttpHeaders> entity = new HttpEntity<>(null, headers);
+
+        ResponseEntity<String>  responseEntity = restTemplate.exchange(
+                "https://www.pivotaltracker.com/services/v5/projects/" + projectId + "/iterations/" + iterationNumber + "/analytics/cycle_time_details",
+                HttpMethod.GET, entity, String.class);
+
+        return responseEntity;
+    }
 }
