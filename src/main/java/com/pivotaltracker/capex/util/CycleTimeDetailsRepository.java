@@ -28,33 +28,34 @@ public class CycleTimeDetailsRepository {
     public CycleTimeStatistics getCycleTimeStatistics(int currentIterationNumber, List<Story> stories) throws IOException {
         ResponseEntity<String> cycleTimeDetailsResponse = capexHttpClient.getCycleTimeDetails(currentIterationNumber);
         List<CycleTimeDetails> cycleTimeDetails = Arrays.asList(objectMapper.readValue(cycleTimeDetailsResponse.getBody(), CycleTimeDetails[].class));
+        int totalBugsCycleTimeInMinutes = getTotalCycleTimeInMinutes(cycleTimeDetails, stories, "bug");
+        int totalFeaturesCycleTimeInMinutes = getTotalCycleTimeInMinutes(cycleTimeDetails, stories, "feature");
 
+        return new CycleTimeStatistics(totalFeaturesCycleTimeInMinutes, totalBugsCycleTimeInMinutes);
+    }
+
+    private int getTotalCycleTimeInMinutes(List<CycleTimeDetails> cycleTimeDetails, List<Story> stories, String storyType) {
         List<Story> acceptedStories = stories.stream()
-                .filter(story ->
-                        (story.getStoryState().equals("accepted")) &&
-                                (story.getStoryType().equals("bug") || story.getStoryType().equals("feature")))
+                .filter(story -> story.getStoryState().equals("accepted") && story.getStoryType().equals(storyType))
                 .collect(Collectors.toList());
 
         Map<Integer, Story> idToStory = new HashMap<>();
         for (Story story : acceptedStories) {
             idToStory.put(story.getStoryId(), story);
         }
-        int totalBugsCycleTime = 0;
-        int totalFeaturesCycleTime = 0;
+        int totalCycleTime = 0;
         for (CycleTimeDetails cycleTimeDetail : cycleTimeDetails) {
             int storyId = cycleTimeDetail.getStoryId();
             if (idToStory.containsKey(storyId)) {
-                if (idToStory.get(storyId).getStoryType().equals("bug")) {
-                    totalBugsCycleTime += cycleTimeDetail.getTotalCycleTime();
-                } else {
-                    totalFeaturesCycleTime += cycleTimeDetail.getTotalCycleTime();
-                }
+                totalCycleTime += cycleTimeDetail.getTotalCycleTime();
             }
         }
 
-        int totalBugsCycleTimeInMinutes = (totalBugsCycleTime / 1000) / 60;
-        int totalFeaturesCycleTimeInMinutes = (totalFeaturesCycleTime /1000) / 60;
-
-        return new CycleTimeStatistics(totalFeaturesCycleTimeInMinutes, totalBugsCycleTimeInMinutes);
+        return convertToMinutes(totalCycleTime);
     }
+
+    private int convertToMinutes(int totalCycleTime) {
+        return totalCycleTime / 60000;
+    }
+
 }
