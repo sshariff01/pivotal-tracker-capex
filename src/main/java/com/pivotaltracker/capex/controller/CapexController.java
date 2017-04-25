@@ -2,6 +2,7 @@ package com.pivotaltracker.capex.controller;
 
 import com.pivotaltracker.capex.http.response.IterationDetails;
 import com.pivotaltracker.capex.http.response.ProjectDetails;
+import com.pivotaltracker.capex.model.CycleTimeStatistics;
 import com.pivotaltracker.capex.model.Iteration;
 import com.pivotaltracker.capex.util.*;
 import io.swagger.annotations.ApiOperation;
@@ -41,20 +42,14 @@ public class CapexController {
         ProjectDetails projectDetails  = projectDetailsRepository.getProjectDetails();
         int currentIterationNumber = projectDetails.getCurrentIterationNumber();
         IterationDetails iterationDetails  = iterationDetailsRepository.getIterationDetails(currentIterationNumber);
-        int totalFeatureCycleTime = cycleTimeDetailsRepository.getTotalIterationFeatureCycleTime(
-                currentIterationNumber,
-                iterationDetails.getCurrentIterationStories());
-        int totalBugCycleTime = cycleTimeDetailsRepository.getTotalIterationBugCycleTime(
-                currentIterationNumber,
-                iterationDetails.getCurrentIterationStories());
-
+        CycleTimeStatistics cycleTimeStatistics = cycleTimeDetailsRepository.getCycleTimeStatistics(currentIterationNumber, iterationDetails.getCurrentIterationStories());
 
         Iteration iteration = iterationFactory.createIteration(
                 currentIterationNumber,
                 iterationDetails.getCurrentIterationStart(),
                 iterationDetails.getCurrentIterationFinish(),
-                totalFeatureCycleTime,
-                totalBugCycleTime);
+                cycleTimeStatistics.getTotalFeatureCycleTime(),
+                cycleTimeStatistics.getTotalBugCycleTime());
         iteration.add(capexLinkBuilder.buildLink());
 
         return new ResponseEntity<>(iteration, HttpStatus.OK);

@@ -3,6 +3,7 @@ package com.pivotaltracker.capex.controller;
 import com.pivotaltracker.capex.http.response.IterationDetails;
 import com.pivotaltracker.capex.http.response.ProjectDetails;
 import com.pivotaltracker.capex.http.response.Story;
+import com.pivotaltracker.capex.model.CycleTimeStatistics;
 import com.pivotaltracker.capex.model.Iteration;
 import com.pivotaltracker.capex.util.*;
 import org.junit.Before;
@@ -60,8 +61,7 @@ public class CapexControllerTest {
                         "2017-04-24T07:00:00",
                         "2017-05-01T07:00:00",
                         stories));
-        when(cycleTimeDetailsRepository.getTotalIterationFeatureCycleTime(1, stories)).thenReturn(850);
-        when(cycleTimeDetailsRepository.getTotalIterationBugCycleTime(1, stories)).thenReturn(100);
+        when(cycleTimeDetailsRepository.getCycleTimeStatistics(1, stories)).thenReturn(new CycleTimeStatistics(850, 100));
     }
 
     @Test
@@ -83,10 +83,7 @@ public class CapexControllerTest {
     public void should_return200OkWithTotalFeatureCycleTime_when_GET_baseUrl() throws IOException {
         ResponseEntity<Iteration> responseEntity = capexController.iteration();
 
-        verify(capexLinkBuilder).buildLink();
-        verify(projectDetailsRepository).getProjectDetails();
-        verify(iterationDetailsRepository).getIterationDetails(1);
-        verify(cycleTimeDetailsRepository).getTotalIterationFeatureCycleTime(1,stories);
+        verify(cycleTimeDetailsRepository).getCycleTimeStatistics(1,stories);
 
         Iteration iteration = responseEntity.getBody();
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -99,10 +96,7 @@ public class CapexControllerTest {
     public void should_return200OkWithTotalBugCycleTime_when_GET_baseUrl() throws IOException {
         ResponseEntity<Iteration> responseEntity = capexController.iteration();
 
-        verify(capexLinkBuilder).buildLink();
-        verify(projectDetailsRepository).getProjectDetails();
-        verify(iterationDetailsRepository).getIterationDetails(1);
-        verify(cycleTimeDetailsRepository).getTotalIterationBugCycleTime(1,stories);
+        verify(cycleTimeDetailsRepository).getCycleTimeStatistics(1,stories);
 
         Iteration iteration = responseEntity.getBody();
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
