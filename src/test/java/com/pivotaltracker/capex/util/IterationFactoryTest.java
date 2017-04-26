@@ -18,7 +18,7 @@ public class IterationFactoryTest {
 
     @Test
     public void should_returnIteration_when_givenIterationNumber() {
-        Iteration iteration = iterationFactory.createIteration(1, "a string", "another string", 100, 100);
+        Iteration iteration = iterationFactory.createIteration(1, "a string", "another string", 100, 100, 100);
         assertThat(iteration.getCurrentIterationNumber()).isEqualTo(1);
         assertThat(iteration.getCurrentIterationStart()).isEqualTo("a string");
         assertThat(iteration.getCurrentIterationFinish()).isEqualTo("another string");
@@ -26,6 +26,8 @@ public class IterationFactoryTest {
         assertThat(iteration.getTotalFeatureCycleTimeUnits()).isEqualTo("minutes");
         assertThat(iteration.getTotalBugCycleTime()).isEqualTo(100);
         assertThat(iteration.getTotalBugCycleTimeUnits()).isEqualTo("minutes");
+        assertThat(iteration.getTotalChoreCycleTime()).isEqualTo(100);
+        assertThat(iteration.getTotalChoreCycleTimeUnits()).isEqualTo("minutes");
     }
 
 }

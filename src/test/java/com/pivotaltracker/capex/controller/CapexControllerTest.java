@@ -61,7 +61,8 @@ public class CapexControllerTest {
                         "2017-04-24T07:00:00",
                         "2017-05-01T07:00:00",
                         stories));
-        when(cycleTimeDetailsRepository.getCycleTimeStatistics(1, stories)).thenReturn(new CycleTimeStatistics(850, 100));
+        when(cycleTimeDetailsRepository.getCycleTimeStatistics(1, stories))
+                .thenReturn(new CycleTimeStatistics(850, 100, 100));
     }
 
     @Test
@@ -103,6 +104,19 @@ public class CapexControllerTest {
         assertThat(iteration).isInstanceOf(Iteration.class);
         assertThat(iteration.getTotalBugCycleTime()).isEqualTo(100);
         assertThat(iteration.getTotalBugCycleTimeUnits()).isEqualTo("minutes");
+    }
+
+    @Test
+    public void should_return200OkWithTotalChoreCycleTime_when_GET_baseUrl() throws IOException {
+        ResponseEntity<Iteration> responseEntity = capexController.iteration();
+
+        verify(cycleTimeDetailsRepository).getCycleTimeStatistics(1,stories);
+
+        Iteration iteration = responseEntity.getBody();
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(iteration).isInstanceOf(Iteration.class);
+        assertThat(iteration.getTotalChoreCycleTime()).isEqualTo(100);
+        assertThat(iteration.getTotalChoreCycleTimeUnits()).isEqualTo("minutes");
     }
 
 }

@@ -30,8 +30,10 @@ public class CycleTimeDetailsRepository {
         List<CycleTimeDetails> cycleTimeDetails = Arrays.asList(objectMapper.readValue(cycleTimeDetailsResponse.getBody(), CycleTimeDetails[].class));
         int totalBugsCycleTimeInMinutes = getTotalCycleTimeInMinutes(cycleTimeDetails, stories, "bug");
         int totalFeaturesCycleTimeInMinutes = getTotalCycleTimeInMinutes(cycleTimeDetails, stories, "feature");
+        int totalChoresCycleTimeInMinutes = getTotalCycleTimeInMinutes(cycleTimeDetails, stories, "chore");
 
-        return new CycleTimeStatistics(totalFeaturesCycleTimeInMinutes, totalBugsCycleTimeInMinutes);
+
+        return new CycleTimeStatistics(totalFeaturesCycleTimeInMinutes, totalBugsCycleTimeInMinutes, totalChoresCycleTimeInMinutes);
     }
 
     private int getTotalCycleTimeInMinutes(List<CycleTimeDetails> cycleTimeDetails, List<Story> stories, String storyType) {

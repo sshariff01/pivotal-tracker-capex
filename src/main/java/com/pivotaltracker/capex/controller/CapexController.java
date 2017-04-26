@@ -49,7 +49,8 @@ public class CapexController {
                 iterationDetails.getCurrentIterationStart(),
                 iterationDetails.getCurrentIterationFinish(),
                 cycleTimeStatistics.getTotalFeatureCycleTime(),
-                cycleTimeStatistics.getTotalBugCycleTime());
+                cycleTimeStatistics.getTotalBugCycleTime(),
+                cycleTimeStatistics.getTotalChoreCycleTime());
         iteration.add(capexLinkBuilder.buildLink());
 
         return new ResponseEntity<>(iteration, HttpStatus.OK);
